@@ -1,0 +1,17 @@
+functional overview / specs
+
+- function will use input to generate auto complete list
+
+- function will take an argument string input as auto complete
+
+- function will take an argument to limit max auto complete  results returned
+
+
+
+
+UI specs
+
+- if no results are found return prompt
+
+- display auto complete results in drop down
+
