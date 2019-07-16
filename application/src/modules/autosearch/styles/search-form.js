@@ -9,19 +9,20 @@ const styles = theme => ({
  },
 
  formTitle:{
-  position: 'absolute',
-  left: '50%',
-  padding: 20,
-  transform: 'translate(-50%)'
+  marginLeft:'25%',
+  padding: 30,
  },
 
  textField:{
-  position: 'absolute', 
+  marginLeft:'10%',
+  paddingTop:10,
   width:'80%',
-  left: '50%', 
-  top: '40%',
-  transform: 'translate(-50%, -50%)'
  },
+
+ suggestions:{
+  marginLeft:'10%',
+  width:'80%',
+ }
 
 });
 
