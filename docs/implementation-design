@@ -1,15 +1,21 @@
 functional overview / specs
 
-- function will use input to generate auto complete list
+implementation
 
 - function will take an argument string input as auto complete
 
-- function will take an argument to limit max auto complete  results returned
+- function will take an argument to limit max auto complete results returned
+
+- will use regex to match against data
+
+
+specs
+
+- will generate a list of results
 
 
 
-
-UI specs
+UI design
 
 - if no results are found return prompt
 
