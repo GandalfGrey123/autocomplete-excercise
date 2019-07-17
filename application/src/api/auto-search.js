@@ -12,7 +12,7 @@ export const getSuggestions = (searchTerm , maxSuggestions, handleResults) => {
     if(products.products[i].name.match(regexPrefix)) {
       results.push(products.products[i].name);
 
-      if(maxSuggestions == results.length){
+      if(maxSuggestions === results.length){
       	break;
       }
     }
