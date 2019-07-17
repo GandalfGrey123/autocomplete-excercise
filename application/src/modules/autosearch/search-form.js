@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {
- withStyles,
+ ClickAwayListener, withStyles,
  Paper, TextField, Typography,
- List, ListItem, ListItemText,
+ List, ListItem, ListItemText, Divider,
+ Slider,
 } from '@material-ui/core'
 
 import styles from './styles/search-form';
@@ -14,25 +15,65 @@ class SearchForm extends Component{
    super(props);
    this.state={
     searchValue: '',
-    suggestions: [],
+    suggestions: [''],
+    showSuggestions: false,
+    maxResults: 5,
    };
   }
 
   onFormChange = (e) => {
     //getSuggestions() 2nd argument is max results returned
-    getSuggestions(e.target.value,5, (response)=>{
+    getSuggestions(e.target.value, 5, (response)=>{
       this.setState({
         searchValue: e.target.value,
+        suggestions: response,
+        showSuggestions: true,               
+      })
+    });
+  }
+
+  onChangeMax = (e,val) => {
+    getSuggestions(this.state.searchValue, val, (response)=>{
+      this.setState({
+        maxResults: val,
         suggestions: response,
       })
     });
   }
 
-  displaySuggestions(){
-    const { suggestions } = this.state;
+  handleOnClick = () =>{
+    this.setState({ showSuggestions: true, }) 
+  }
 
+  handleClickAway = () => {
+    this.setState({ showSuggestions: false, })
+  }
+
+  displaySuggestions = () => {
+    const { searchValue, suggestions, showSuggestions} = this.state;
+    const { classes } = this.props;
+
+     //if search input is empty
+     if(searchValue === '' || !showSuggestions){
+      return(
+        <div></div>
+      );
+     }
+
+     if(suggestions.length === 0){
+      return(
+        
+        <Paper className={classes.suggestionsBox}>
+        <ListItem key={0} button>
+          <ListItemText primary="Nothing found.." />                
+        </ListItem>
+        </Paper>
+      );
+     }
+
+    //else search box not empty
     return(
-      
+         <Paper className= {classes.suggestionsBox}>
          <List 
            component="nav" 
            aria-label="Secondary mailbox folders"
@@ -40,20 +81,26 @@ class SearchForm extends Component{
           <React.Fragment>
             {
              suggestions.map(( nextSuggestion , index )=>(
-               <ListItem key={index} button>
-                 <ListItemText primary={nextSuggestion} />
+              
+               <ListItem 
+                 key={index} 
+                 button
+                 onClick={ ()=>{this.onFormChange({target:{value:nextSuggestion}})} }
+                 >
+                 <ListItemText primary={nextSuggestion} />                
                </ListItem>
+
              ))
             }                 
           </React.Fragment>
          </List>
-      
+         </Paper>
     );
   }
 
   render(){
    const { classes } = this.props;
-   const { searchValue, suggestions} = this.state;
+   const { searchValue, suggestions, maxResults} = this.state;
 
    return (
    	<Paper 
@@ -68,18 +115,37 @@ class SearchForm extends Component{
   		 Autosearch
 	    </Typography>
 
-   	 <TextField
-        label="Search Field"
-        type="search"
-        value={searchValue}
-        className={classes.textField}     
-        variant="outlined"
-        onChange={ this.onFormChange }
-      />
 
-      <Paper className={classes.suggestions}>
-        {this.displaySuggestions()}
-      </Paper>
+      <Typography className={classes.maxSlider} id="continuous-slider" >
+         Max Results Returned ({maxResults})
+      </Typography>
+   
+       <Slider 
+        value={maxResults} 
+        onChange={this.onChangeMax } 
+        aria-labelledby="continuous-slider" 
+        className={classes.maxSlider}
+        step={1}
+        marks
+        valueLabelDisplay="auto"
+        min={0}
+        max={10}
+       />
+
+     <ClickAwayListener onClickAway={this.handleClickAway}>
+   	    <TextField
+           label="Search Field"
+           type="search"
+           value={searchValue}
+           className={classes.textField}     
+           variant="outlined"
+           onChange={ this.onFormChange }
+           onClick={ this.handleOnClick }
+         />
+      </ClickAwayListener>
+
+      {this.displaySuggestions()}
+
    	</Paper>
    );
   }
