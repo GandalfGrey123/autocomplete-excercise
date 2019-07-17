@@ -1,6 +1,3 @@
-# autocomplete-excercise
+# autocomplete branch
 
-### Application Usage
-
-1. clone repo
-2. in application/ folder run `npm start` 
+branch implemented the autocomplete functionality and integrated into React componenet
