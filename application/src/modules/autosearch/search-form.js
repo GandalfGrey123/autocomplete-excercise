@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
- ClickAwayListener, withStyles,
+ withStyles,
  Paper, TextField, Typography,
  List, ListItem, ListItemText, Divider,
  Slider,
@@ -26,8 +26,7 @@ class SearchForm extends Component{
     getSuggestions(e.target.value, 5, (response)=>{
       this.setState({
         searchValue: e.target.value,
-        suggestions: response,
-        showSuggestions: true,               
+        suggestions: response,        
       })
     });
   }
@@ -41,20 +40,13 @@ class SearchForm extends Component{
     });
   }
 
-  handleOnClick = () =>{
-    this.setState({ showSuggestions: true, }) 
-  }
-
-  handleClickAway = () => {
-    this.setState({ showSuggestions: false, })
-  }
 
   displaySuggestions = () => {
-    const { searchValue, suggestions, showSuggestions} = this.state;
+    const { searchValue, suggestions} = this.state;
     const { classes } = this.props;
 
      //if search input is empty
-     if(searchValue === '' || !showSuggestions){
+     if(searchValue === ''){
       return(
         <div></div>
       );
@@ -99,7 +91,7 @@ class SearchForm extends Component{
   }
 
   render(){
-   const { classes } = this.props;
+   const { classes , maxSliderValue } = this.props;
    const { searchValue, suggestions, maxResults} = this.state;
 
    return (
@@ -119,7 +111,8 @@ class SearchForm extends Component{
       <Typography className={classes.maxSlider} id="continuous-slider" >
          Max Results Returned ({maxResults})
       </Typography>
-   
+
+
        <Slider 
         value={maxResults} 
         onChange={this.onChangeMax } 
@@ -128,11 +121,12 @@ class SearchForm extends Component{
         step={1}
         marks
         valueLabelDisplay="auto"
+        onClick={this.handleOnClick}
         min={0}
-        max={10}
+        max={maxSliderValue}
        />
 
-     <ClickAwayListener onClickAway={this.handleClickAway}>
+
    	    <TextField
            label="Search Field"
            type="search"
@@ -142,7 +136,7 @@ class SearchForm extends Component{
            onChange={ this.onFormChange }
            onClick={ this.handleOnClick }
          />
-      </ClickAwayListener>
+
 
       {this.displaySuggestions()}
 

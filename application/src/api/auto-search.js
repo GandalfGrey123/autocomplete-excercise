@@ -20,7 +20,7 @@ export const getSuggestions = (searchTerm , maxSuggestions, handleResults) => {
        }
      }
  
-     if(maxSuggestions == results.length){       
+     if(maxSuggestions === results.length){       
        handleResults(results);
        return;
      }
