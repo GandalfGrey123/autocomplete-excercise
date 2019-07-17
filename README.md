@@ -9,9 +9,9 @@ Node version v10.16.0+
 
 1. clone repo
 
-in application/ folder:
+in the `/application` folder: (install module dependencies and then run application)
 
-2. npm install
+2. run `npm install`
 3. run `npm start` 
 
 
