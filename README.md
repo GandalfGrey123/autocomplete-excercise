@@ -1,9 +1,18 @@
 # autocomplete-excercise
 
+### Requirements
+
+Node version v10.16.0+
+
+
 ### Application Usage
 
 1. clone repo
-2. in application/ folder run `npm start` 
+
+in application/ folder:
+
+2. npm install
+3. run `npm start` 
 
 
 ### Coding Style / Folder Structure
