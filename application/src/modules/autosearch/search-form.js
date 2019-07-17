@@ -91,7 +91,7 @@ class SearchForm extends Component{
   }
 
   render(){
-   const { classes } = this.props;
+   const { classes , maxSliderValue } = this.props;
    const { searchValue, suggestions, maxResults} = this.state;
 
    return (
@@ -123,7 +123,7 @@ class SearchForm extends Component{
         valueLabelDisplay="auto"
         onClick={this.handleOnClick}
         min={0}
-        max={10}
+        max={maxSliderValue}
        />
 
 
