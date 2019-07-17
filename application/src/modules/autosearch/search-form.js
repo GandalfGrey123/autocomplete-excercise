@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
  withStyles,
  Paper, TextField, Typography,
- List, ListItem, ListItemText, Divider,
+ List, ListItem, ListItemText,
 } from '@material-ui/core'
 
 import styles from './styles/search-form';
@@ -19,7 +19,7 @@ class SearchForm extends Component{
   }
 
   onFormChange = (e) => {
-
+    //getSuggestions() 2nd argument is max results returned
     getSuggestions(e.target.value,5, (response)=>{
       this.setState({
         searchValue: e.target.value,
