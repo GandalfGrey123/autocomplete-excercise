@@ -1,22 +1,32 @@
 import products from './products.json';
 
+//validate the string searchTerm incase of special characters
+function escapeRegExp(searchTerm) {
+   return searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 export const getSuggestions = (searchTerm , maxSuggestions, handleResults) => {
- let results = []	
+   let results = []
+
+   if(!searchTerm){
+   	 handleResults([]);
+   	 return;
+   	} 	
+   
+  //regex to check "if string starts with searchTerm"
+   let regexPrefix =  new RegExp('^' + escapeRegExp(searchTerm), 'i')
+   let nextProduct =''
+
+   for(nextProduct of products.products){
+     if(nextProduct.name.match(regexPrefix)) {
+       results.push(nextProduct.name);
+     }
  
-//regex to check "if string starts with searchTerm"
- let regexPrefix =  new RegExp('^' + searchTerm, 'i')
-
- for (var i=0; i < products.products.length; i++) {
-
- 	//if product name begins with searchTerm push to results
-    if(products.products[i].name.match(regexPrefix)) {
-      results.push(products.products[i].name);
-
-      if(maxSuggestions === results.length){
-      	break;
-      }
-    }
- }
+     if(maxSuggestions === results.length){
+       handleResults(results);
+       return;
+     }
+   }
 
  handleResults(results);
 }
