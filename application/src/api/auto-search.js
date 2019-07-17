@@ -26,5 +26,23 @@ export const getSuggestions = (searchTerm , maxSuggestions, handleResults) => {
      }
    }
 
+   
+   if(maxSuggestions > results.length){            
+    regexPrefix =  new RegExp('.*' + escapeRegExp(searchTerm), 'i')
+    for(nextProduct of products.products){
+
+     if(nextProduct.name.match(regexPrefix)) {       
+       if(!results.includes(nextProduct.name)){
+        results.push(nextProduct.name);
+       }
+     }
+ 
+     if(maxSuggestions === results.length){       
+       handleResults(results);
+       return;
+     }
+    }
+   }
+
  handleResults(results);
 }
