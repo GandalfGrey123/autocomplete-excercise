@@ -3,5 +3,5 @@ To Do
 - implement better solution for handling duplicate
 - implement solution for caching data (reduce multiple queries)
 - implement quicker search
-
+- clean up css
 
