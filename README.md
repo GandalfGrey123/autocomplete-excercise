@@ -1,2 +1,6 @@
 # autocomplete-excercise
-implementation of javascript autocomplete function 
+
+### Application Usage
+
+1. clone repo
+2. in application/ folder run `npm start` 
