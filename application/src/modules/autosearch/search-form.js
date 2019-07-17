@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core'
 
 import styles from './styles/search-form';
+import {getSuggestions} from '../../api/auto-search'
 
 class SearchForm extends Component{
 
@@ -13,14 +14,18 @@ class SearchForm extends Component{
    super(props);
    this.state={
     searchValue: '',
-    suggestions: ['suggestion1','suggestion2'],
+    suggestions: [],
    };
   }
 
   onFormChange = (e) => {
-    this.setState({
-      searchValue: e.target.value,
-    })
+
+    getSuggestions(e.target.value,5, (response)=>{
+      this.setState({
+        searchValue: e.target.value,
+        suggestions: response,
+      })
+    });
   }
 
   displaySuggestions(){
@@ -34,8 +39,8 @@ class SearchForm extends Component{
           >
           <React.Fragment>
             {
-             suggestions.map(( nextSuggestion )=>(
-               <ListItem button>
+             suggestions.map(( nextSuggestion , index )=>(
+               <ListItem key={index} button>
                  <ListItemText primary={nextSuggestion} />
                </ListItem>
              ))
