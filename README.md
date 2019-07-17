@@ -25,8 +25,8 @@ in the `/application` folder:
 
 all source code for this application is located in `/applications/src` folder
 
-each custom React component is located in the `/applications/src/modules` folder with its own folder
+custom React components are located in `/applications/src/modules/`
 
-styles for each custom React component will be located in the component's folder in a `styles` folder
+styles for each custom React component will be located with the component in a `/modules/foo-components/styles` folder
 
-dev notes and project documentation is stored in the `/docs` folder 
+extra dev notes and project documentation are stored in the `/docs` folder 
