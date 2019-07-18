@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import {
  withStyles,
  Paper, TextField, Typography,
- List, ListItem, ListItemText, Divider,
+ List, ListItem, ListItemText,
 } from '@material-ui/core'
 
 import styles from './styles/search-form';
-import { getSuggestions } from '../../api/auto-search'
+
+import { getSuggestions } from '../../util/auto-search'
 
 class AutoSearchForm extends Component{
 
@@ -16,51 +17,56 @@ class AutoSearchForm extends Component{
    this.state={
 
     searchValue: '',
-    predictedSearchValue: '',
-
     suggestions: [''],
     showSuggestions: false,
-
+    
     maxSuggestions: this.props.maxResults,
     highlightIndex: -1,    
-
    };
 
   this.offsetKey = this.offsetKey.bind(this);
   this.onKeyPressed = this.onKeyPressed.bind(this);
   }
 
+
   onFormChange = (e) => {
-    let {maxSuggestions} = this.state;
+    let { maxSuggestions } = this.state;
     //getSuggestions() 2nd argument is max results returned
-    getSuggestions(e.target.value,maxSuggestions, (response)=>{
+    getSuggestions(e.target.value, maxSuggestions, (response)=>{
       this.setState({
-        searchValue: e.target.value,
+        searchValue: e.target.value ,
         suggestions: response,
-        highlightIndex: 0,        
+        highlightIndex: 0,
       })
     });
   }
 
   displayByIndex = (index) =>{
    let {suggestions} = this.state;
+   
    this.setState({
-     searchValue: suggestions[index],
-     highlightIndex: index,           
+     searchValue: suggestions[index].name,
+     highlightIndex: index,
+     suggestions:[suggestions[index]],     
    })
   }
 
  //support key navigation
   offsetKey = (offset) =>{
-   let {highlightIndex} = this.state;  
+    let {highlightIndex , suggestions} = this.state;  
+
+    if( offset < 0  && highlightIndex == 0){return;}
+    if( offset > 0  && highlightIndex == suggestions.length-1){return;}
+
     this.setState({ 
-       highlightIndex: highlightIndex+offset
+      highlightIndex: highlightIndex+offset,
     });
   }
 
   onKeyPressed = (e) =>{    
-  let {highlightIndex} = this.state; 
-   if (e.keyCode == '38') {  
+  let { highlightIndex } = this.state;
+
+   if (e.keyCode == '38') { 
      this.offsetKey(-1);
    }
    else if (e.keyCode == '40') {
@@ -72,13 +78,17 @@ class AutoSearchForm extends Component{
    }
   }
 
-  displaySuggestions = () => {
-    const { searchValue, suggestions, highlightIndex} = this.state;
-    const { classes } = this.props;
+  //return difference => (searchResult - searchTerm)
+  stringDifference = ( searchTerm, searchResult )=>{      
+   searchResult = searchResult.toLowerCase()
+   return searchResult.substring(
+            searchResult.indexOf(searchTerm.toLowerCase())+searchTerm.length)
+  }
 
-    for(let i=0; i < suggestions.length; i++){
-       console.log(i === highlightIndex)
-    }
+
+  displaySuggestions = () => {
+    let { searchValue, suggestions } = this.state;
+    let { classes } = this.props;
 
      //if search input is empty
      if(searchValue === ''){
@@ -89,7 +99,6 @@ class AutoSearchForm extends Component{
 
      if(suggestions.length === 0){
       return(
-        
         <Paper className={classes.suggestionsBox}>
         <ListItem key={0} button>
           <ListItemText primary="Nothing found.." />                
@@ -98,33 +107,83 @@ class AutoSearchForm extends Component{
       );
      }
 
-    //else search box not empty
+    // else search box not empty generate a meaningful suggestion list
     return(
-         <Paper className= {classes.suggestionsBox}>
+       <Paper className= {classes.suggestionsBox}>
          <List 
            component="nav" 
            aria-label="Secondary mailbox folders"          
           >
-          <React.Fragment>
-            {
-             suggestions.map(( nextSuggestion , index )=>(
-              
-               <ListItem 
-                 key={index} 
-                 button
-                 onClick={ ()=>{ this.displayByIndex(index) }}
-                 selected={highlightIndex === index}
-                 >
-                 <ListItemText primary={nextSuggestion} />                
-               </ListItem>
-
-             ))
-            }                 
-          </React.Fragment>
+            { this.generateListItems() }
          </List>
-         </Paper>
+       </Paper>
     );
   }
+
+  generateListItems = () => {
+    let {searchValue , suggestions, highlightIndex} = this.state;
+    let { classes } = this.props;
+
+    let items = [];
+    let nextItemText = '';
+
+    for(let i=0; i < suggestions.length; i++){
+
+      nextItemText = this.stringDifference(searchValue,suggestions[i].name);
+
+      if(nextItemText === suggestions[i].name.toLowerCase()){
+        items.push(
+
+        <ListItem 
+          key={i} 
+          button
+          onClick={()=> { this.displayByIndex(i) }}
+          selected = { highlightIndex === i}
+         >
+           <ListItemText primary={ suggestions[i].name }/>                
+         </ListItem>
+        );
+      }
+
+      else{
+        items.push(
+
+         <ListItem 
+          key={i} 
+          button
+          onClick={()=> { this.displayByIndex(i) }}
+          selected = { highlightIndex === i}
+         >
+              <ListItemText primary={
+                <Typography> 
+                   { searchValue } 
+  
+                   <Typography 
+                    className={classes.highlightDifference} 
+                    variant="secondary">
+                     { nextItemText.split('-')[0] }               
+  
+                     <Typography 
+                    className={classes.highlightCategory} 
+                    variant="secondary">
+                    in { suggestions[i].type }
+                    </Typography> 
+  
+                   </Typography> 
+                </Typography> 
+               }             
+               />                 
+           
+         </ListItem>
+
+        );
+      }     
+    }
+
+    return items;
+  }
+
+
 
   render(){
    const { classes } = this.props;
@@ -141,21 +200,20 @@ class AutoSearchForm extends Component{
    	   component="h3" 
        className={classes.formTitle}  	   
    	  >
-  		 Autosearch
+  		 Autocomplete
 	    </Typography>
 
-   	    <TextField
-           label="Search Field"
-           type="search"
-           value={searchValue}
-           className={classes.textField}     
-           variant="outlined"
-           onChange={ this.onFormChange }
-           onClick={ this.handleOnClick }
-         />
+   	  <TextField
+         label="Search Field"
+         type="search"
+         value={ searchValue }
+         className={ classes.textField }     
+         variant="outlined"
+         onChange={ this.onFormChange }
+         onClick={ this.handleOnClick }
+       />
 
-
-      {this.displaySuggestions()}
+      { this.displaySuggestions() }
 
    	</Paper>
    );
