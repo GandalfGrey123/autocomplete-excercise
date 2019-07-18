@@ -3,7 +3,7 @@ var textFieldLeftOffset = '10%';
 
 const styles = theme => ({
  formBody: {
-  width: '60%',
+  width: '90%',
   height:500,
   position: 'absolute', 
   left: '50%', 
@@ -12,9 +12,9 @@ const styles = theme => ({
  },
 
  formTitle:{
-  width:'80%',
-  marginLeft:'25%',
-  padding: 40,
+  paddingTop:50,
+  paddingLeft:20,
+  paddingBottom: 50,
  },
 
  textField:{
