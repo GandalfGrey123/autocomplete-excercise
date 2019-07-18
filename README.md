@@ -19,17 +19,13 @@ Node version v10.16.0+
 
 1. clone repo
 
-in the `/application` folder:
-
-2. run `npm install`
+2. in the `/application` folder run: `npm install`
  
-
+ 
 
 ### Usage
 
-in the `/application` folder: 
-
-1. run `npm start` 
+1. in the `/application` folder run: `npm start` 
 
 
 ### Coding Style / Folder Structure
