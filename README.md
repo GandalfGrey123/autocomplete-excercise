@@ -1,7 +1,7 @@
 # autocomplete-excercise
 
 ## Summary
-Basic autocomplete text field application , 
+This is a basic autocomplete text field React component , 
 
 - suggestion drop down highlights difference 
 - suggestion drop down shows result category/scope
