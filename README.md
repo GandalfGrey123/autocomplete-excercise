@@ -1,5 +1,16 @@
 # autocomplete-excercise
 
+## Summary
+Basic autocomplete text field application , 
+
+- suggestion drop down highlights difference 
+- suggestion drop down shows result category/scope
+- dropdown supports key navigation
+- dropdown supports auto text fill
+- autocomplete component will take maxSResults prop to limit suggestions shown
+
+
+
 ### Requirements
 
 Node version v10.16.0+
