@@ -1,8 +1,6 @@
 var textFieldWidth = '80%';
 var textFieldLeftOffset = '10%';
 
-var sliderWidth = '80%';
-
 const styles = theme => ({
  formBody: {
   width: '60%',
@@ -14,14 +12,16 @@ const styles = theme => ({
  },
 
  formTitle:{
+  width:'80%',
   marginLeft:'25%',
   padding: 40,
  },
 
  textField:{
   marginLeft:textFieldLeftOffset,
-  paddingTop:10,
+  paddingTop:10,  
   width:textFieldWidth,
+   cursor: 'none' ,
  },
 
  suggestionsBox:{
@@ -29,14 +29,15 @@ const styles = theme => ({
   width:textFieldWidth,
  },
 
- hideBox:{
-  display: 'none',
+ highlightDifference:{
+  marginLeft:2,
+  fontWeight: 'bold',
  },
 
- maxSlider:{
-  marginLeft:textFieldLeftOffset,
-  width:sliderWidth,
- },
+ highlightCategory:{
+  marginLeft:5,
+  color:'#3B5998',
+ }
 
 });
 

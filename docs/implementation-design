@@ -6,12 +6,14 @@ implementation
 
 - function will take an argument to limit max auto complete results returned
 
-- will use regex to match against data
 
+cases
 
-specs
+- typed out of order relevant words ex. "bank us Chase"
 
-- will generate a list of results
+- in typing a known phrase "Chase Ban"...
+
+- typing a category ex. "mortgage"
 
 
 
